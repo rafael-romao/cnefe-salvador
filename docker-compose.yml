@@ -1,7 +1,7 @@
 
 x-spark-worker-common:
   &spark-worker-common
-  image: cluster-apache-spark:3.4
+  # image: cluster-apache-spark:3.4
   build: ./
   environment:
     - SPARK_MODE=worker
@@ -13,12 +13,14 @@ x-spark-worker-common:
     - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
     - SPARK_SSL_ENABLED=no
     - SPARK_USER=spark
+  volumes:
+    - ./data:/opt/bitnami/spark/data_test:rw
   depends_on:
     - spark-master
 
 services:
   spark-master:
-    image: cluster-apache-spark:3.4
+    # image: cluster-apache-spark:3.4
     build: ./    
     container_name: 'docker-spark-master'
     environment:
@@ -35,7 +37,7 @@ services:
     volumes:
       - ./conf/:/opt/bitnami/spark/conf/
       - ./jars_dir:/opt/bitnami/spark/ivy
-      - ./data/:/opt/bitnami/spark/data/
+      - ./data:/opt/bitnami/spark/data_test:rw
   spark-worker-1:
     container_name: 'docker-spark-worker-1'
     <<: *spark-worker-common
@@ -46,4 +48,7 @@ networks:
   default:
     name: spark
     external: false
+volumes:
+  data:
+    external: true
       

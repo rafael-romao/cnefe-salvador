@@ -13,8 +13,6 @@ ARG spark_uid=185
 # Specify the user info for spark_uid
 RUN useradd -d /home/sparkuser -ms /bin/bash -u ${spark_uid} sparkuser \
     && chown -R sparkuser /opt/bitnami/spark/
-    # && chown -R sparkuser /data
-
 
 ENV PYSPARK_MAJOR_PYTHON_VERSION=3 \
     APP_DIR=/opt/bitnami/spark
@@ -22,7 +20,7 @@ ENV PYSPARK_MAJOR_PYTHON_VERSION=3 \
 USER ${spark_uid}
 
 # Python script to start the program
-COPY --chown=sparkuser ./app/src/landing_to_raw.py ${APP_DIR}
+COPY --chown=sparkuser ./app/src/ ${APP_DIR}
 # COPY --chown=sparkuser ./data ${APP_DIR}/data
 
 
@@ -30,10 +28,8 @@ COPY --chown=sparkuser ./app/src/landing_to_raw.py ${APP_DIR}
 RUN chown -R sparkuser:sparkuser ${APP_DIR}/*
 
 
+
 EXPOSE 4040
 
-# RUN chmod 777 /opt/bitnami/spark/app/
-
-# RUN $SPARK_HOME/bin/spark-submit --conf spark.jars.ivy=/opt/bitnami/spark/ivy ./landing_to_raw.py ./data/landing/29.txt ./data/cleaned/cnefe/
-
-# RUN $SPARK_HOME/bin/spark-submit --conf spark.jars.ivy=/opt/spark/ivy  ./app/test.py
+# RUN $SPARK_HOME/bin/spark-submit --conf spark.jars.ivy=/opt/bitnami/spark/ivy ./src/landing_to_raw.py ./data_test/landing/29.txt ./data_test/raw/cnefe_bahia/
+# RUN $SPARK_HOME/bin/spark-submit --conf spark.jars.ivy=/opt/bitnami/spark/ivy ./raw_to_base_a.py ./data_test/raw/cnefe_bahia/ ./data_test/cleaned/base_a/
