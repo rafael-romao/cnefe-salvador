@@ -1,43 +1,47 @@
 
 x-spark-worker-common:
   &spark-worker-common
-  # image: cluster-apache-spark:3.4
   build: ./
   environment:
     - SPARK_MODE=worker
     - SPARK_MASTER_URL=spark://spark-master:7077
-    - SPARK_WORKER_MEMORY=512mb
+    - SPARK_HOME=/opt/bitnami/spark
+    - SPARK_WORKER_MEMORY=1G
     - SPARK_WORKER_CORES=1
     - SPARK_RPC_AUTHENTICATION_ENABLED=no
     - SPARK_RPC_ENCRYPTION_ENABLED=no
     - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
     - SPARK_SSL_ENABLED=no
-    - SPARK_USER=spark
+    # - SPARK_USER=spark
   volumes:
-    - ./data:/opt/bitnami/spark/data_test:rw
+    - ../data:/opt/bitnami/spark/data
   depends_on:
     - spark-master
 
 services:
   spark-master:
-    # image: cluster-apache-spark:3.4
-    build: ./    
+    build: ./   
     container_name: 'docker-spark-master'
     environment:
+      - PYSPARK_PYTHON=python3
       - SPARK_MODE=master
+      - SPARK_HOME=/opt/bitnami/spark
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
       - SPARK_SSL_ENABLED=no
-      - SPARK_USER=spark
+      # - SPARK_USER=spark
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=1G
     ports:
       - '9090:8080'
       - '7077:7077'
       - '4040:4040'
     volumes:
-      - ./conf/:/opt/bitnami/spark/conf/
+      - ./conf:/opt/bitnami/spark/conf
+      - ./app/src:/opt/bitnami/spark/app
       - ./jars_dir:/opt/bitnami/spark/ivy
-      - ./data:/opt/bitnami/spark/data_test:rw
+      - ./data:/opt/bitnami/spark/data
   spark-worker-1:
     container_name: 'docker-spark-worker-1'
     <<: *spark-worker-common
@@ -46,7 +50,7 @@ services:
     <<: *spark-worker-common   
 networks:
   default:
-    name: spark
+    name: cnefe
     external: false
 volumes:
   data:

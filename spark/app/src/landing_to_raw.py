@@ -1,9 +1,7 @@
-from __future__ import print_function
-
-import sys
-
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
+import sys
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
@@ -11,9 +9,11 @@ if __name__ == "__main__":
 
     spark = (SparkSession
         .builder
-        .appName("cnefe_landing_to_raw")
+        .appName("landing_to_raw")
         .getOrCreate())
     
+    spark.sparkContext.setLogLevel("ERROR")
+
     # get the cnefe data set file name
     cnefe_file = sys.argv[1]
     output_path = sys.argv[2]
@@ -71,11 +71,13 @@ if __name__ == "__main__":
     
     parsed_cnefe = parse_dataframe(cnefe_df, cnefe_uf_schema)
     
-    
+    print(f"Quantidade de registros depois: {parsed_cnefe.count()}")
 
     # Escrevendo a base A
     parsed_cnefe.write.format("parquet") \
             .mode("overwrite") \
             .option("parquet.compression", "snappy") \
             .save(f"{output_path}")
+
+    print("Base escrita!")
 

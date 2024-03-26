@@ -9,7 +9,7 @@ if __name__ == "__main__":
         sys.exit(-1)
 
     spark = (
-        SparkSession.builder.appName("cnefe_landing_to_raw")
+        SparkSession.builder.appName("base_a")
         .getOrCreate())
     
     # Função para remover espaços em branco

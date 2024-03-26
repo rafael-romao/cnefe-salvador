@@ -1,10 +1,10 @@
 #!/usr/bin/make
 
 run: ## Start the Spark service
-	@docker run -u $(id -u):$(id -g)  -it -v ./data:/opt/bitnami/spark/data_test cluster-apache-spark:3.4 bash
+	@docker run -u $(id -u):$(id -g)  -it -v ./data:/opt/bitnami/spark/data cluster-apache-spark:3.4 bash
 
 build: ## Stop the Spark service
-	@docker build -t cluster-apache-spark:3.4 .
+	@docker build -t cluster-apache-spark:3.4 ./spark/
 
 prune:
 	@docker system prune -a --volumes
