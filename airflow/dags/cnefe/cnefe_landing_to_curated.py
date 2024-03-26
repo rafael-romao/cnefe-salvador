@@ -1,20 +1,16 @@
-from airflow.operators.empty import EmptyOperator
 from airflow.decorators import dag
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
-
-import pendulum
-from airflow import DAG
-from datetime import datetime
 from airflow.operators.empty import EmptyOperator
+import pendulum
 
 
 @dag(
         start_date=pendulum.datetime(2024, 1, 1, tz="UTC"),
         schedule=None,          
         catchup=False,
-        tag=['cnefe']
+        tags=['cnefe']
 )
-def cnefe_landing_to_cureated():
+def cnefe_landing_to_curated():
 
     landing_to_raw= SparkSubmitOperator(
         task_id="landing_to_raw",

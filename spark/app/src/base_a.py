@@ -9,7 +9,7 @@ if __name__ == "__main__":
         sys.exit(-1)
 
     spark = (
-        SparkSession.builder.appName("base_a")
+        SparkSession.builder.appName()
         .getOrCreate())
     
     # Função para remover espaços em branco

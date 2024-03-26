@@ -9,7 +9,7 @@ if __name__ == "__main__":
 
     spark = (SparkSession
         .builder
-        .appName("landing_to_raw")
+        .appName()
         .getOrCreate())
     
     spark.sparkContext.setLogLevel("ERROR")
