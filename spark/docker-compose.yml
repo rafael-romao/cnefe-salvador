@@ -15,6 +15,8 @@ x-spark-worker-common:
     # - SPARK_USER=${SPARK_UID}:${SPARK_GID}
   volumes:
     - ../data:/opt/bitnami/spark/data
+  networks:
+    - projeto_airflow_spark
   env_file: ../.env
   # user: "${SPARK_UID:-1000}:${SPARK_GID:-0}"
   depends_on:
@@ -44,6 +46,8 @@ services:
       - ./app/src:/opt/bitnami/spark/app
       - ./jars_dir:/opt/bitnami/spark/ivy
       - ../data:/opt/bitnami/spark/data
+    networks:
+    - projeto_airflow_spark
     env_file: ../.env
     # user: "${SPARK_UID:-1000}:${SPARK_GID:-0}"
   spark-worker-1:
@@ -52,11 +56,7 @@ services:
   spark-worker-2:
     container_name: 'docker-spark-worker-2'
     <<: *spark-worker-common   
+
 networks:
-  default:
-    name: cnefe
-    external: false
-# volumes:
-#   data:
-#     external: true
-      
+  projeto_airflow_spark:
+    external: true

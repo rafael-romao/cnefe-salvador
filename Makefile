@@ -1,55 +1,57 @@
 #!/usr/bin/make
 
+SPARK_COMPOSE_FOLDER = ./spark/docker-compose.yml
+AIRFLOW_COMPOSE_FOLDER = ./airflow/airflow-docker-compose.yml
+
 
 preprare_enviroment:
 	@echo -e "AIRFLOW_UID=$(shell id -u)" >> ./.env
-	@echo -e "AIRFLOW_GID=$(shell id -g)" >> ./.env
 
 
 build:
-	@docker compose -f ./spark/docker-compose.yml pull
-	@docker compose -f ./spark/docker-compose.yml build
-	@docker compose -f ./airflow/airflow-docker-compose.yml pull
-	@docker compose -f ./airflow/airflow-docker-compose.yml build
-
+	@make build_spark
+	@make build_airflow
 
 build_spark:
-	@docker compose -f ./spark/docker-compose.yml pull
-	@docker compose -f ./spark/docker-compose.yml build
+	@docker compose -f ${SPARK_COMPOSE_FOLDER} pull
+	@docker compose -f ${SPARK_COMPOSE_FOLDER} build
 
 build_airflow:
-	@docker compose -f ./airflow/airflow-docker-compose.yml pull
-	@docker compose -f ./airflow/airflow-docker-compose.yml build
+	@docker compose -f ${AIRFLOW_COMPOSE_FOLDER} pull
+	@docker compose -f ${AIRFLOW_COMPOSE_FOLDER} build
 
 
-up_spark:
-	@docker compose -f ./spark/docker-compose.yml up -d
 
-up_airflow:
-	@echo "Initiating Airflow"
-	@docker compose -f ./airflow/airflow-docker-compose.yml up -d
-
-up_services:
-	@echo "Initiating Spark and Airflow" 
+up:
 	@make up_spark
 	@make up_airflow
+
+up_spark:
+	@docker compose -f ${SPARK_COMPOSE_FOLDER} up -d
+
+up_airflow:
+	@docker compose -f ${AIRFLOW_COMPOSE_FOLDER} up -d
+
+
 		
 stop:
-	@docker compose -f ./spark/docker-compose.yml stop
-	@docker compose -f ./airflow/airflow-docker-compose.yml stop
+	@make stop_airflow
+	@make stop_spark
+
+stop_spark:
+	@docker compose -f ${SPARK_COMPOSE_FOLDER} stop
 
 stop_airflow:
-	@docker compose -f ./airflow/airflow-docker-compose.yml stop
+	@docker compose -f ${AIRFLOW_COMPOSE_FOLDER} stop
 
-# run: ## Start the Spark service
-# 	@docker run -u $(id -u):$(id -g)  -it -v ./data:/opt/bitnami/spark/data /spark/spark-docker-compose.yml bash
 
 prune:
-	@docker compose -f ./spark/docker-compose.yml down --volumes --rmi all --remove-orphans
-	@docker compose -f ./airflow/airflow-docker-compose.yml down --volumes --rmi all --remove-orphans
+	@docker compose -f ${SPARK_COMPOSE_FOLDER} down --volumes --rmi all --remove-orphans
+	@docker compose -f ${AIRFLOW_COMPOSE_FOLDER} down --volumes --rmi all --remove-orphans
 
-tty:
+
+tty_spark:
 	@docker exec -it $(shell docker container ls -q --filter ancestor=spark-spark-master) /bin/bash
 
-airflow_tty:
-	@docker exec -it $(shell docker container ls -q --filter ancestor= airflow-airflow-scheduler-1) /bin/bash
+tty_airflow:
+	@docker exec -it $(shell docker container ls -q --filter ancestor=airflow-airflow-scheduler) /bin/bash
