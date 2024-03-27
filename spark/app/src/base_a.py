@@ -4,7 +4,16 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import trim, col, monotonically_increasing_id, current_timestamp, regexp_replace, concat_ws
 
 
-spark = SparkSession.builder.getOrCreate()
+spark = SparkSession.builder.getOrCreate()    
+spark.sparkContext.setLogLevel("ERROR")
+sc = spark
+hadoop_conf = sc._jsc.hadoopConfiguration()
+hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+hadoop_conf.set("fs.s3a.endpoint", "http://minio:9000")
+hadoop_conf.set("fs.s3a.access.key", "Lpb96IPlnTJkjMuHf9sP")
+hadoop_conf.set("fs.s3a.secret.key", "npSgZbllEEZzfEmZOl0wXJJSL5Wj6qBF4wRRQ2hD")
+hadoop_conf.set("fs.s3a.path.style.access", "True")
+# hadoop_conf.set("fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
 
 # Função para remover espaços em branco
 def trim_df(df):
@@ -12,8 +21,8 @@ def trim_df(df):
 
 
 # set variables
-cnefe_bahia_raw = "./data/raw/cnefe_bahia/"
-output_path = "./data/cleaned/base_a/"
+cnefe_bahia_raw = "s3a://raw/cnefe_bahia"
+output_path = "s3a://cleaned/base_a"
 codigo_municipio = "27408"
 limit_amostra = 100000
     
@@ -69,9 +78,13 @@ base_a = (base_a.withColumn("complemento_concatenado", trim("complemento_concate
                 .withColumn("complemento_concatenado", regexp_replace(col("complemento_concatenado"), regex, replace_with)))
 
 
+print(f"Quantidade de registros: {base_a.count()}")
+
 # Escrevendo a base A
 base_a.write.format("parquet") \
         .mode("overwrite") \
         .option("parquet.compression", "snappy") \
         .save(f"{output_path}")
+
+print("Base escrita!")
 

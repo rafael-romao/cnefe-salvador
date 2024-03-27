@@ -1,17 +1,24 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
-import sys
+import os
 
 
-spark = SparkSession.builder.getOrCreate()
-    
+spark = SparkSession.builder.getOrCreate()    
 spark.sparkContext.setLogLevel("ERROR")
+sc = spark
+hadoop_conf = sc._jsc.hadoopConfiguration()
+hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+hadoop_conf.set("fs.s3a.endpoint", "http://minio:9000")
+hadoop_conf.set("fs.s3a.access.key", "Lpb96IPlnTJkjMuHf9sP")
+hadoop_conf.set("fs.s3a.secret.key", "npSgZbllEEZzfEmZOl0wXJJSL5Wj6qBF4wRRQ2hD")
+hadoop_conf.set("fs.s3a.path.style.access", "True")
+hadoop_conf.set("fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
 
 # get the cnefe data set file name
-cnefe_file = "./data/landing/29.txt"
-output_path = "./data/raw/cnefe_bahia/"
+cnefe_file = "s3a://landing/29.txt"
+output_path = "s3a://raw/cnefe_bahia"
 
-print(f"cnefe_file: {cnefe_file}")
+# print(f"MINIO URL: {os.environ['MINIO_URL']}")
 
 
 # Parse database

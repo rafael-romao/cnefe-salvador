@@ -161,3 +161,7 @@ cython_debug/
 
 # Data
 /data
+minio_storage/
+
+#Logs
+/logs

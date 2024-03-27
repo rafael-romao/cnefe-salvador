@@ -1,7 +1,7 @@
 #!/usr/bin/make
 
-SPARK_COMPOSE_FOLDER = ./spark/docker-compose.yml
-AIRFLOW_COMPOSE_FOLDER = ./airflow/airflow-docker-compose.yml
+SPARK_COMPOSE_FOLDER = ./docker-compose.yml
+AIRFLOW_COMPOSE_FOLDER = ./airflow-docker-compose.yml
 
 
 preprare_enviroment:
@@ -51,7 +51,8 @@ prune:
 
 
 tty_spark:
-	@docker exec -it $(shell docker container ls -q --filter ancestor=spark-spark-master) /bin/bash
+	@docker exec -it $(shell docker container ls -q --filter name=docker-spark-master) /bin/bash
 
 tty_airflow:
-	@docker exec -it $(shell docker container ls -q --filter ancestor=airflow-airflow-scheduler) /bin/bash
+	@docker exec -it $(shell docker container ls -q --filter name=cnefe_salvador-airflow-scheduler) /bin/bash
+
