@@ -55,4 +55,3 @@ tty_spark:
 
 tty_airflow:
 	@docker exec -it $(shell docker container ls -q --filter name=cnefe_salvador-airflow-scheduler) /bin/bash
-

@@ -1,4 +1,4 @@
-FROM apache/airflow:2.7.3 
+FROM apache/airflow:2.8.4 
 
 # Run installation tasks as root
 USER 0
@@ -7,7 +7,7 @@ USER 0
 RUN mkdir -p /usr/share/man/man1 /usr/share/man/man2
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    openjdk-11-jre
+    openjdk-17-jre
 
 
 RUN apt-get install -y iputils-ping

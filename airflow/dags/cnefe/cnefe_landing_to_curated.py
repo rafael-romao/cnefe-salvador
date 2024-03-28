@@ -31,7 +31,7 @@ def cnefe_landing_to_curated():
     base_a = SparkSubmitOperator(
         task_id="base_a",
         conn_id="spark_default",
-        application="./app/raw_to_base_a.py",
+        application="./app/base_a.py",
         conf=CONFIG,
         name="base_a",
         retries=2

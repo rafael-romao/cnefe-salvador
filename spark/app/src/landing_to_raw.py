@@ -9,8 +9,8 @@ sc = spark
 hadoop_conf = sc._jsc.hadoopConfiguration()
 hadoop_conf.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
 hadoop_conf.set("fs.s3a.endpoint", "http://minio:9000")
-hadoop_conf.set("fs.s3a.access.key", "Lpb96IPlnTJkjMuHf9sP")
-hadoop_conf.set("fs.s3a.secret.key", "npSgZbllEEZzfEmZOl0wXJJSL5Wj6qBF4wRRQ2hD")
+hadoop_conf.set("fs.s3a.access.key", "7hgOYRYF7bQvG6toul8I")
+hadoop_conf.set("fs.s3a.secret.key", "cG8S9jo2c9rY6ynCp8rqZ5bNuY1WsZbzTepLHBcG")
 hadoop_conf.set("fs.s3a.path.style.access", "True")
 hadoop_conf.set("fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
 
