@@ -15,9 +15,9 @@ O objetivo desse projeto é a condução de um processo de pipeline ETL para ext
 
 ### MinIO `>=RELEASE.2023-11-22`
 
-MinIO é um object storage desse projeto.
-
 ### Jupyter `7.2.1`
+
+
 
 ## Pré-requisitos
 É recomendável que este projeto rode com a versão `3.11.8` ou superior do Python. Mais recomendável é rodá-lo em um ambiente virtual com essa versão, o que é possível ser feito com o [pyenv](https://github.com/pyenv/pyenv-virtualenv). Também é necessário o gerenciador de containers [Docker](https://docs.docker.com/engine/install/).
@@ -75,6 +75,13 @@ Acesse o MinIO e no menu Bucket > Access Keys crie uma chave de acesso. Importan
 ![alt text](/imagens/minio_bucket_exemplo.png)
 
 No meu Object Browse > Upload, adicione a base `29.txt` no bucket `landing`
+
+É possível executar jobs Spark através do comando `make tty_spark` para acessar a máquina Master do Spark
+
+```shell
+$ make tty_spark
+$ $SPARK_HOME/bin/spark-submit --conf spark.jars.ivy=/opt/bitnami/spark/ivy ./app/landing_to_raw.py 
+```
 
 
 
