@@ -1,5 +1,3 @@
-import sys
-
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import trim, col, monotonically_increasing_id, current_timestamp, regexp_replace, concat_ws
 

@@ -17,7 +17,7 @@ CONFIG = {
         catchup=False,
         tags=['cnefe']
 )
-def cnefe_landing_to_curated():
+def cnefe_landing_to_matrix_distance():
 
     landing_to_raw= SparkSubmitOperator(
         task_id="landing_to_raw",
@@ -37,12 +37,30 @@ def cnefe_landing_to_curated():
         retries=2
     )
 
+    base_b = SparkSubmitOperator(
+        task_id="base_b",
+        conn_id="spark_default",
+        application="./app/src/base_b.py",
+        conf=CONFIG,
+        name="base_a",
+        retries=2
+    )
+
+    base_matrix_distance = SparkSubmitOperator(
+        task_id="create_distance_matrix",
+        conn_id="spark_default",
+        application="./app/src/create_distance_matrix.py",
+        conf=CONFIG,
+        name="base_a",
+        retries=2
+    )
+
 
     start = EmptyOperator(task_id="start")
     
     done = EmptyOperator(task_id="done")
 
-    start >> landing_to_raw >> base_a >> done
+    start >> landing_to_raw >> base_a >> base_b >> base_matrix_distance >> done
 
-_ = cnefe_landing_to_curated()
+_ = cnefe_landing_to_matrix_distance()
     

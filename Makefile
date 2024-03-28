@@ -5,7 +5,10 @@ AIRFLOW_COMPOSE_FOLDER = ./airflow-docker-compose.yml
 
 
 preprare_enviroment:
-	@echo -e "AIRFLOW_UID=$(shell id -u)" >> ./.env
+	@mkdir minio_storage
+	@cp .env-template .env
+	@echo "AIRFLOW_UID=$(shell id -u)" >> ./.env
+	@docker create network projeto_airflow_spark
 
 
 build:

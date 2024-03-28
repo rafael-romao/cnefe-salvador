@@ -13,9 +13,7 @@ x-spark-worker-common:
     - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
     - SPARK_SSL_ENABLED=no
     - SPARK_USER=spark
-    - MINIO_URL=http://minio:9000    
-  volumes:
-    - ./data:/opt/bitnami/spark/data
+    - MINIO_URL=http://minio:9000  
   networks:
     - projeto_airflow_spark  
   depends_on:
@@ -45,7 +43,6 @@ services:
       - ./spark/conf:/opt/bitnami/spark/conf
       - ./spark/app/src:/opt/bitnami/spark/app
       - ./spark/jars_dir:/opt/bitnami/spark/ivy
-      - ./data:/opt/bitnami/spark/data
     networks:
     - projeto_airflow_spark
   spark-worker-1:

@@ -4,26 +4,20 @@ O objetivo desse projeto é a condução de um processo de pipeline ETL para ext
 
 ## Arquitetura
 
-### Spark
-
-`3.5.0`
+### Spark `3.5.0`
 
 | Tipo  | Quantidade | Memória Disp.
 | ------------- | ------------- | ------------- |
 | `MASTER`  | 1  | 1GB|
 | `WORKER` | 2  | 1GB |
 
-### Airflow
+### Airflow `2.8.4`
 
-`2.8.4`
+### MinIO `>=RELEASE.2023-11-22`
 
-### MinIO
+MinIO é um object storage desse projeto.
 
-`>=RELEASE.2023-11-22`
-
-### Jupyter
-
-`7.2.1`
+### Jupyter `7.2.1`
 
 ## Pré-requisitos
 É recomendável que este projeto rode com a versão `3.11.8` ou superior do Python. Mais recomendável é rodá-lo em um ambiente virtual com essa versão, o que é possível ser feito com o [pyenv](https://github.com/pyenv/pyenv-virtualenv). Também é necessário o gerenciador de containers [Docker](https://docs.docker.com/engine/install/).
